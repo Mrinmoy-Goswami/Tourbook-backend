@@ -6,6 +6,7 @@ const Post = require("../models/Post.js");
 
 router.post("/", async (req, res) => {
   const newPost = new Post(req.body);
+ 
   try {
     const savedPost = await newPost.save();
     res.status(200).json("Posted succesfully !" + savedPost);
@@ -13,6 +14,30 @@ router.post("/", async (req, res) => {
     res.status(400).json(err);
   }
 });
+
+//Like a post
+router.post("/:id/like",async(req,res)=>{
+  try {
+   const post = await Post.findByIdAndUpdate(req.params.id,{
+
+     $inc:{ likes : 1}
+   });
+  res.status(200).json(post);
+ } catch (error) {
+  res.json(error)
+ }
+})
+router.post("/:id/unlike",async(req,res)=>{
+  try {
+   const post = await Post.findByIdAndUpdate(req.params.id,{
+
+     $inc:{ likes : -1}
+   });
+  res.status(200).json(post.likes);
+ } catch (error) {
+  res.json(error)
+ }
+})
 
 //Update a post
 router.put("/:id", async (req, res) => {

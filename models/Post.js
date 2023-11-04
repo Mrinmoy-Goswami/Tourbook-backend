@@ -8,13 +8,18 @@ const PostSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    photo:{
-        type:String,
-        required:false
-    },
     username:{
         type:String,
         required:true
+    },
+    likes:{
+        type:Number,
+        required:false
+
+    },
+    pic:{
+        type:String,
+        
     }
 },{timestamps:true})
 
