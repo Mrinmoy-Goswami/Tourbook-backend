@@ -6,7 +6,7 @@ dotenv.config()
 // Access your API key as an environment variable (see "Set up your API key" above)
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 
-router.post('/',async(req,res)=>{
+router.get('/',async(req,res)=>{
     try {
         
         const model = genAI.getGenerativeModel({ model: "gemini-pro"});
