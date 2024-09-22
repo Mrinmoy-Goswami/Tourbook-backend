@@ -1,39 +1,31 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 
-dotenv.config()
-// Access your API key as an environment variable (see "Set up your API key" above)
-const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+dotenv.config();
 
-router.get('/',async(req,res)=>{
+// Initialize GoogleGenerativeAI with the API key
+// Make sure to include these imports:
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+router.post('/',async(req,res)=>{
+     const prompt = req.body.prompt;
+     if(!prompt){
+        res.status(400).json("Please provide a prompt to get results")
+     }
     try {
-        
-        const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-        
-        const prompt = req.body.prompt
-        
-        const result = await model.generateContent(prompt);
-        const response =  result.response;
-        const text = response.text();
-        
-        res.status(200).send(text)
+        const genAI = new GoogleGenerativeAI(process.env.API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+const promptText = `Make me an ititnerary for the place ${prompt}. Tell me about the best places to visit, best experiences to have and also the best locations and hotels. Write an itinerary for 3-4 days within a few lines`;
+
+const result = await model.generateContent(promptText);
+res.status(200).json(result)
     } catch (error) {
-        res.json(error)
+        res.status(400).json("Some error occured")
     }
-    })
+})
 
-// async function run() {
-//   // For text-only input, use the gemini-pro model
-//   const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+// console.log(result.response.text());
 
-//   const prompt = "Write a story about a magic backpack."
-
-//   const result = await model.generateContent(prompt);
-//   const response =  result.response;
-//   const text = response.text();
-//   console.log(text);
-// }
-
-module.exports = router
-
+module.exports = router;
