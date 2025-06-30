@@ -1,3 +1,7 @@
+// Polyfill fetch for Node <18
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+global.fetch = fetch;
+
 const express = require('express'); 
 const router = express.Router();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
