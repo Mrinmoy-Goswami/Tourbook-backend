@@ -24,7 +24,7 @@ res.status(200).json(result)
     } catch (error) {
         res.status(400).json({
             message: "Some error occurred",
-            error: error // Include the error details if needed
+            error: error.message // Include the error details if needed
           });
     }
 })

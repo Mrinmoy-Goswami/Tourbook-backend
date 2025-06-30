@@ -14,7 +14,7 @@ const path = require("path");
 
 dotenv.config();
 app.use(express.json())
-app.use(cors());
+app.use(cors({ origin: "*", methods: ["GET", "POST"] }));
 app.use("/images",express.static(path.join(__dirname,"/images")));
 const PORT = process.env.PORT || 4000
 
